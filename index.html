@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Бабулин хлеб · ремесленный хлеб</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #fcf8f2;
+      --bg-secondary: #f5ede4;
+      --bg-card: rgba(255, 248, 240, 0.6);
+      --bg-card-hover: rgba(255, 245, 235, 0.85);
+      --text-primary: #1f150e;
+      --text-secondary: #4c3d30;
+      --text-muted: #6b5a4a;
+      --border-color: rgba(200, 180, 160, 0.3);
+      --border-hover: #dbb48b;
+      --accent: #b57c4a;
+      --accent-dark: #8a5f38;
+      --glow: rgba(181, 124, 74, 0.15);
+      --shadow: 0 8px 32px rgba(0,0,0,0.08);
+      --glass: rgba(255, 248, 242, 0.5);
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #16100c;
+      --bg-secondary: #1e1712;
+      --bg-card: rgba(40, 32, 26, 0.7);
+      --bg-card-hover: rgba(55, 44, 36, 0.85);
+      --text-primary: #f0e4d8;
+      --text-secondary: #cbb8a8;
+      --text-muted: #a08d7a;
+      --border-color: rgba(80, 65, 55, 0.4);
+      --border-hover: #b57c4a;
+      --glass: rgba(20, 16, 12, 0.7);
+      --shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.5;
+      transition: background 0.4s, color 0.4s;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ГЛОУ-ФОНЫ */
+    .bg-glow {
+      position: fixed;
+      top: -20%;
+      right: -10%;
+      width: 60vw;
+      height: 60vw;
+      background: radial-gradient(circle at 30% 40%, #f7d9b0, #e8c9a0 40%, transparent 70%);
+      filter: blur(100px);
+      opacity: 0.3;
+      z-index: -1;
+      pointer-events: none;
+      transition: opacity 0.4s;
+    }
+    [data-theme="dark"] .bg-glow {
+      opacity: 0.12;
+      background: radial-gradient(circle at 30% 40%, #8a6a4a, #5a3f2b 40%, transparent 70%);
+    }
+
+    .bg-glow-left {
+      position: fixed;
+      bottom: -10%;
+      left: -10%;
+      width: 50vw;
+      height: 50vw;
+      background: radial-gradient(circle, #d8c4b0, #c6b09a 30%, transparent 70%);
+      filter: blur(90px);
+      opacity: 0.2;
+      z-index: -1;
+      pointer-events: none;
+      transition: opacity 0.4s;
+    }
+    [data-theme="dark"] .bg-glow-left {
+      opacity: 0.08;
+      background: radial-gradient(circle, #4a3a2e, #2a1f18 30%, transparent 70%);
+    }
+
+    /* НАВБАР */
+    .navbar {
+      padding: 18px 0 14px;
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      background: var(--glass);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: background 0.4s, border-color 0.4s;
+    }
+
+    .nav-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.7rem;
+      letter-spacing: -0.02em;
+      background: linear-gradient(145deg, #3d2b1e, #8a5f38);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      transition: 0.3s;
+    }
+    [data-theme="dark"] .logo {
+      background: linear-gradient(145deg, #dbb48b, #b57c4a);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    .logo i {
+      color: var(--accent);
+      font-size: 1.6rem;
+      background: var(--glow);
+      padding: 8px;
+      border-radius: 40px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .theme-toggle {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 40px;
+      padding: 8px 14px;
+      cursor: pointer;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      background: var(--bg-card-hover);
+    }
+
+    .btn-order-nav {
+      background: linear-gradient(135deg, #b57c4a, #8a5f38);
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 16px rgba(181, 124, 74, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-order-nav:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(181, 124, 74, 0.4);
+    }
+
+    /* ГЕРОЙ */
+    .hero {
+      padding: 50px 0 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 768px) { .hero { grid-template-columns: 1fr; text-align: center; } }
+
+    .hero h1 {
+      font-size: 3.4rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #2c1f15, #6b4a2e);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 16px;
+    }
+    [data-theme="dark"] .hero h1 {
+      background: linear-gradient(135deg, #f0e4d8, #dbb48b);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    .hero h1 span { 
+      background: linear-gradient(135deg, #b57c4a, #dba470);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 480px;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+    @media (max-width: 768px) { .hero p { margin: 0 auto; } }
+
+    .hero-badge {
+      display: inline-flex;
+      background: var(--glow);
+      backdrop-filter: blur(8px);
+      padding: 8px 20px;
+      border-radius: 60px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--accent-dark);
+      border: 1px solid var(--border-color);
+      margin-bottom: 20px;
+    }
+
+    .hero-image svg {
+      width: 100%;
+      max-width: 460px;
+      border-radius: 40px;
+      box-shadow: var(--shadow);
+      background: var(--bg-secondary);
+      transition: 0.3s;
+    }
+
+    /* СЕКЦИЯ ТОВАРОВ */
+    .section-title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .section-sub {
+      color: var(--text-muted);
+      font-weight: 300;
+      margin-bottom: 36px;
+    }
+
+    .bread-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+
+    .bread-item {
+      background: var(--bg-card);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      border-radius: 32px;
+      overflow: hidden;
+      transition: all 0.3s;
+      box-shadow: var(--shadow);
+    }
+    .bread-item:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-hover);
+      background: var(--bg-card-hover);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+    }
+
+    .bread-img-wrap {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      background: var(--bg-secondary);
+      overflow: hidden;
+    }
+    .bread-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: 0.4s;
+    }
+    .bread-item:hover .bread-img-wrap img {
+      transform: scale(1.03);
+    }
+    .bread-img-wrap .overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 20px 14px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.5));
+      color: #fff;
+    }
+    .bread-img-wrap .overlay .badge-new {
+      background: var(--accent);
+      color: #fff;
+      padding: 3px 14px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-block;
+    }
+
+    .bread-info {
+      padding: 20px 22px 24px;
+    }
+    .bread-info h4 {
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-bottom: 4px;
+    }
+    .bread-info .desc {
+      color: var(--text-muted);
+      font-weight: 300;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+    .bread-info .price {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--accent);
+    }
+    .btn-add-cart {
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-add-cart:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(181, 124, 74, 0.3);
+    }
+
+    /* КОРЗИНА */
+    .cart-section {
+      background: var(--bg-card);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      border-radius: 32px;
+      padding: 28px 32px;
+      margin: 30px 0 40px;
+      transition: 0.3s;
+    }
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .cart-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cart-items {
+      list-style: none;
+      padding: 0;
+    }
+    .cart-items li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .cart-items li:last-child { border-bottom: none; }
+    .cart-total {
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-top: 12px;
+      text-align: right;
+      color: var(--accent);
+    }
+    .btn-clear-cart {
+      background: transparent;
+      border: 1px solid #e74c3c;
+      color: #e74c3c;
+      padding: 6px 16px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+    .btn-clear-cart:hover { background: #e74c3c; color: #fff; }
+
+    /* ФОРМЫ */
+    .forms-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin: 30px 0 20px;
+    }
+    @media (max-width: 768px) { .forms-grid { grid-template-columns: 1fr; } }
+
+    .form-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      border-radius: 32px;
+      padding: 28px 30px;
+      transition: 0.3s;
+      box-shadow: var(--shadow);
+    }
+    .form-card:hover { border-color: var(--border-hover); }
+    .form-card h4 {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .form-card .sub {
+      color: var(--text-muted);
+      font-weight: 300;
+      font-size: 0.9rem;
+      margin-bottom: 18px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      color: var(--text-secondary);
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: 0.3s;
+      outline: none;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--glow);
+    }
+    .form-group textarea { min-height: 60px; resize: vertical; }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #b57c4a, #8a5f38);
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+      box-shadow: 0 4px 16px rgba(181, 124, 74, 0.25);
+    }
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(181, 124, 74, 0.35);
+    }
+
+    /* ФУТЕР */
+    footer {
+      padding: 30px 0 20px;
+      border-top: 1px solid var(--border-color);
+      margin-top: 20px;
+    }
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .footer-social a {
+      color: var(--text-secondary);
+      font-size: 1.6rem;
+      margin-left: 18px;
+      transition: 0.3s;
+    }
+    .footer-social a:hover { color: var(--accent); transform: translateY(-3px); }
+    .footer-small {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+      text-align: center;
+      width: 100%;
+      opacity: 0.7;
+    }
+
+    /* АДАПТИВ */
+    @media (max-width: 480px) {
+      .container { padding: 0 16px; }
+      .hero h1 { font-size: 2.2rem; }
+      .bread-grid { grid-template-columns: 1fr; }
+      .cart-section { padding: 20px; }
+      .form-card { padding: 20px; }
+    }
+
+    /* СТИЛЬ ДЛЯ МЕСТ ЗАМЕНЫ */
+    .replace-tag {
+      background: #ff6b35;
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: 6px;
+      letter-spacing: 0.5px;
+    }
+    .replace-tag-dark {
+      background: #ff6b35;
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="bg-glow-left"></div>
+
+<!-- НАВИГАЦИЯ -->
+<nav class="navbar">
+  <div class="container nav-flex">
+    <div class="logo">
+      <div class="logo">
+  <img src="https://sun1-57.vkuserphoto.ru/s/v1/ig2/5KsBLk9UXdG-PCKE--sXfTIbDuipilJWh8WxjRxYXLc2hUo6a-Dg6H3lJfEM5ZMQv9d8XmaBeZk7BKxfam1o3XkF.jpg?quality=95&as=32x38,48x57,72x86,108x129,160x191,240x286,360x429,480x572,540x644,640x763,720x858,787x938&from=bu&u=xTHhkjRIe7QERedfWtgXygGKkAYhjcvld1dX3ajHQsk&cs=787x0" alt="Логотип" style="height: 40px; width: auto;">
+  <span style="font-weight: 800; font-size: 1.7rem; letter-spacing: -0.02em;">Бабулин хлеб</span>
+</div>
+
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+        <i class="fas fa-moon"></i> <span id="themeLabel">Тема</span>
+      </button>
+      <button class="btn-order-nav" onclick="document.getElementById('orderForms').scrollIntoView({behavior:'smooth'})">
+        <i class="fas fa-bread-slice"></i> Заказать
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+
+  <!-- ГЕРОЙ -->
+  <section class="hero">
+    <div>
+      <div class="hero-badge"><i class="fas fa-fire" style="margin-right:8px;"></i> ремесленный хлеб</div>
+      <h1>Хлеб от бабушки <br><span>как в детстве</span></h1>
+      <p>Настоящий ремесленный хлеб на закваске, вызревает 24 часа. Без добавок, только мука, вода, соль и любовь.</p>
+    </div>
+    <div class="hero-image">
+      <svg viewBox="0 0 400 400">
+        <defs>
+          <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ede3d6" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#dccfc0" stop-opacity="0.4"/>
+          </linearGradient>
+          <linearGradient id="breadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#dba470" />
+            <stop offset="50%" stop-color="#c28b5a" />
+            <stop offset="100%" stop-color="#a16f42" />
+          </linearGradient>
+        </defs>
+        <ellipse cx="200" cy="210" rx="140" ry="110" fill="https://sun9-1.vkuserphoto.ru/s/v1/ig2/pH0DKtbwX5p6jU5y_t7DrTW2zdO8jY05MLPNjaJhZzhuPTgK012E95nDTz1YylXLznZWq4rR4IfQ_kicee6ZSPz8.jpg?quality=95&as=32x57,48x85,72x128,108x192,160x284,240x427,360x640,480x853,540x960,640x1138,720x1280&from=bu&u=d5wEpDhUQp0lDMfEH27PF8wFdICHTdlPo1e4rh8Z7ZY&cs=720x0" />
+        <ellipse cx="200" cy="210" rx="130" ry="100" fill="url(#breadGrad)" />
+        <path d="M115 170 Q140 140 165 160" stroke="#8a5f38" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.5" />
+        <path d="M220 155 Q250 125 280 150" stroke="#8a5f38" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.5" />
+        <circle cx="100" cy="130" r="8" fill="#f5e8da" opacity="0.3" />
+        <circle cx="290" cy="120" r="12" fill="#f5e8da" opacity="0.25" />
+        <circle cx="80" cy="250" r="6" fill="#f5e8da" opacity="0.2" />
+      </svg>
+    </div>
+  </section>
+
+  <!-- ТОВАРЫ -->
+  <section>
+    <h2 class="section-title">🍞 ремесленный ассортимент</h2>
+    <p class="section-sub">каждый хлеб — со своим характером</p>
+    <div class="bread-grid" id="breadList">
+      <!-- Карточка 1 -->
+      <div class="bread-item" data-name="Дарницкий" data-price="50">
+        <div class="bread-img-wrap">
+         
+          <img src="https://main-cdn.sbermegamarket.ru/big2/hlr-system/-73/593/489/912/712/55/100047774001b0.jpg" alt="Деревенский хлеб">
+          <div class="overlay"><span class="badge-new">хит</span></div>
+        </div>
+        <div class="bread-info">
+          <h4>Дарницкий </h4>
+          <div class="desc"> хлеб на закваске (600г.) </div>
+          <div class="price">50 ₽</div>
+          <button class="btn-add-cart" onclick="addToCart('Дарницкий',50 )"><i class="fas fa-plus"></i> В корзину</button>
+        </div>
+      </div>
+
+      <!-- Карточка 2: ЕКАТЕРИНИНСКИЙ (вместо Белого бисквита) -->
+      <div class="bread-item" data-name="Бородинский" data-price="200">
+        <div class="bread-img-wrap">
+    
+          <img src="https://st.bork.ru/recipes/vypechka-i-deserty/khleb-borodinskiy/3.jpg" alt="Бородинский хлеб">
+          <div class="overlay"><span class="badge-new">классика</span></div>
+        </div>
+        <div class="bread-info">
+          <h4>Бородинский</h4>
+          <div class="desc">Ароматный хлеб на закваске</div>
+          <div class="price">80₽</div>
+          <button class="btn-add-cart" onclick="addToCart('Бородинский', 80)"><i class="fas fa-plus"></i> В корзину</button>
+        </div>
+      </div>
+
+      <!-- Карточка 3 -->
+      <div class="bread-item" data-name="Шоколадный" data-price="200">
+        <div class="bread-img-wrap">
+         
+          <img src="https://images.gastronom.ru/3Tp6RFcYnWFMeskrG4KqBn6Hn3FcewDE-SodSuEe79M/pr:recipe-cover-image/g:ce/rs:auto:0:0:0/L2Ntcy9hbGwtaW1hZ2VzL2FjNTAzYjU0LWEwZGQtNDY3Zi05YTU5LTkyZmQ0NmFjY2U3My5qcGc.webp" alt="Хлеб Шоколадный">
+          <div class="overlay"><span class="badge-new">новинка</span></div>
+        </div>
+        <div class="bread-info">
+          <h4>Шоколадный</h4>
+          <div class="desc">Ароматный с суховруктами и грецки орехом</div>
+          <div class="price">200 ₽</div>
+          <button class="btn-add-cart" onclick="addToCart('Шоколадный', 200)"><i class="fas fa-plus"></i> В корзину</button>
+        </div>
+      </div>
+    </div>
+    
+      
+  </section>
+
+  <!-- КОРЗИНА -->
+  <section class="cart-section" id="cartSection">
+    <div class="cart-header">
+      <h3><i class="fas fa-shopping-cart"></i> Корзина</h3>
+      <button class="btn-clear-cart" onclick="clearCart()"><i class="fas fa-trash"></i> Очистить</button>
+    </div>
+    <ul class="cart-items" id="cartItems">
+      <li style="color: var(--text-muted); font-weight:300;">Добавте в корзину хлеб и он отобразится в форме для заказа</li>
+    </ul>
+    <div class="cart-total" id="cartTotal">Итого: 0 ₽</div>
+  </section>
+
+  <!-- ФОРМЫ: ЗАКАЗ + ОЧЕРЕДЬ -->
+  <section id="orderForms">
+    <h2 class="section-title">📦 оформить заказ</h2>
+    <p class="section-sub">заполните форму, и бабушка испечёт для вас свежайший хлеб</p>
+    <div class="forms-grid">
+      <!-- Форма заказа -->
+      <div class="form-card">
+        <h4><i class="fas fa-check-circle" style="color:var(--accent);"></i> Заказ</h4>
+        <div class="sub">Оставьте контакты, и я свяжecm с вами</div>
+        <form id="orderForm" onsubmit="submitOrder(event, 'order')">
+          <div class="form-group">
+            <label>Ваше имя</label>
+            <input type="text" name="name" placeholder="Подскажите ваше имя" required>
+          </div>
+          <div class="form-group">
+            <label>Номер телефона</label>
+            <input type="tel" name="phone" placeholder="+7XXXXXXXX" required>
+          </div>
+          <div class="form-group">
+            <label>Что хотите заказать?</label>
+            <textarea name="comment" placeholder="Напишите, какой хлеб и сколько штук"></textarea>
+          </div>
+          <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Отправить заказ</button>
+        </form>
+        <!-- ⚠️⚠️⚠️ ВНИЗУ ФОРМЫ МЕЛКИЙ ТЕКСТ-НАПОМИНАНИЕ -->
+        <p style="font-size:0.7rem; color:var(--text-muted); margin-top:12px; opacity:0.7;">
+          <i class="fas fa-info-circle"></i> Рекомендуем уточнять наличие хлеба по телефону
+        </p>
+      </div>
+
+      <!-- Форма очереди -->
+      <div class="form-card">
+        <h4><i class="fas fa-clock" style="color:var(--accent);"></i> Запись в очередь</h4>
+        <div class="sub">Если хлеб закончился — встаньте в очередь на ближайшую выпечку</div>
+        <form id="queueForm" onsubmit="submitOrder(event, 'queue')">
+          <div class="form-group">
+            <label>Ваше имя</label>
+            <input type="text" name="name" placeholder="Подскажите ваше имя" required>
+          </div>
+          <div class="form-group">
+            <label>Номер телефона</label>
+            <input type="tel" name="phone" placeholder="+7XXXXXXXX" required>
+          </div>
+          <div class="form-group">
+            <label>Пожелания</label>
+            <textarea name="comment" placeholder="Какой хлеб вас интересует?"></textarea>
+          </div>
+          <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #6b5a4a, #4c3d30);"><i class="fas fa-hourglass-half"></i> Встать в очередь</button>
+        </form>
+        <p style="font-size:0.7rem; color:var(--text-muted); margin-top:12px; opacity:0.7;">
+          <i class="fas fa-info-circle"></i> я перезвоню, когда хлеб будет готов
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ФУТЕР -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+       <div style="display:flex; align-items:center;">
+ <div class="logo">
+  <img src="https://sun1-57.vkuserphoto.ru/s/v1/ig2/5KsBLk9UXdG-PCKE--sXfTIbDuipilJWh8WxjRxYXLc2hUo6a-Dg6H3lJfEM5ZMQv9d8XmaBeZk7BKxfam1o3XkF.jpg?quality=95&as=32x38,48x57,72x86,108x129,160x191,240x286,360x429,480x572,540x644,640x763,720x858,787x938&from=bu&u=xTHhkjRIe7QERedfWtgXygGKkAYhjcvld1dX3ajHQsk&cs=787x0" alt="Логотип" style="height: 40px; width: auto;">
+  <span style="font-weight: 800; font-size: 1.7rem; letter-spacing: -0.02em;">Бабулин хлеб</span>
+</div>
+
+</div>
+
+          
+        </div>
+      </div>
+      <div class="footer-social">
+        <!-- CСЫЛКИ VK И MAX -->
+        <a href="https://vk.ru/id766145287" title="ВКонтакте" target="_blank"><i class="fab fa-vk"></i></a>
+        <a href="https://max.ru/u/f9LHodD0cOKKX8oP0V4Q_a0mNO97_Ac2QLkWW9IOiV_OW-a1Ni0zHDEo-Qo" title="MAX" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+        <span style="margin-left:12px; font-size:0.8rem; color:var(--text-muted);">
+          
+        </span>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-color); font-size: 0.75rem; color: var(--text-muted); opacity: 0.6; font-weight: 300; letter-spacing: 0.3px;">
+      © Вахрушев И. Г. 2026г.
+    </div>
+    <div class="footer-small">
+      <i class="fas fa-info-circle"></i> Рекомендуется уточнять наличие хлеба по контактам выше, так как он изготавливается только под заказ.
+      <br>
+       <i class="fas fa-info-circle"></i> Изображение товара может отличаться от реального внешнего вида продукта.
+      <br>
+   
+      <span style="opacity:0.5;">📞 для связи: 89630006115</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ========== ТЁМНАЯ ТЕМА ==========
+  const toggleBtn = document.getElementById('themeToggle');
+  const themeLabel = document.getElementById('themeLabel');
+  let dark = false;
+
+  toggleBtn.addEventListener('click', () => {
+    dark = !dark;
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : '');
+    themeLabel.textContent = dark ? 'Светлая' : 'Тема';
+    toggleBtn.innerHTML = dark ? '<i class="fas fa-sun"></i> Светлая' : '<i class="fas fa-moon"></i> Тема';
+  });
+
+  // ========== КОРЗИНА ==========
+  let cart = [];
+
+  function addToCart(name, price) {
+    const existing = cart.find(item => item.name === name);
+    if (existing) {
+      existing.qty += 1;
+    } else {
+      cart.push({ name, price, qty: 1 });
+    }
+    renderCart();
+  }
+
+  function removeFromCart(name) {
+    cart = cart.filter(item => item.name !== name);
+    renderCart();
+  }
+
+  function clearCart() {
+    cart = [];
+    renderCart();
+  }
+
+  function renderCart() {
+    const container = document.getElementById('cartItems');
+    const totalEl = document.getElementById('cartTotal');
+    if (cart.length === 0) {
+      container.innerHTML = '<li style="color: var(--text-muted); font-weight:300;">Добавьте в корзину хлеб, и он отобразится в форме для заказа.</li>';
+      totalEl.textContent = 'Итого: 0 ₽';
+      return;
+    }
+    let html = '';
+    let total = 0;
+    cart.forEach(item => {
+      const sum = item.price * item.qty;
+      total += sum;
+      html += `
+        <li>
+          <span><strong>${item.name}</strong> × ${item.qty} = ${sum} ₽</span>
+          <button class="btn-clear-cart" style="padding:4px 12px; font-size:0.7rem;" onclick="removeFromCart('${item.name}')">✕</button>
+        </li>
+      `;
+    });
+    container.innerHTML = html;
+    totalEl.textContent = `Итого: ${total} ₽`;
+  }
+
+  // ========== ОТПРАВКА ФОРМ ==========
+
+  const PHONE_NUMBER = '89630006115'; 
+
+  function submitOrder(e, type) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const name = formData.get('name');
+    const phone = formData.get('phone');
+    const comment = formData.get('comment') || '';
+
+    // Собираем корзину, если есть
+    let cartText = '';
+    if (cart.length > 0) {
+      cartText = cart.map(i => `${i.name} × ${i.qty} = ${i.price*i.qty}₽`).join('; ');
+    } else {
+      cartText = 'не указано';
+    }
+
+    const typeLabel = type === 'order' ? 'ЗАКАЗ' : 'ЗАПИСЬ В ОЧЕРЕДЬ';
+    const message = `🍞 ${typeLabel} от ${name}\n📞 Телефон: ${phone}\n📦 Корзина: ${cartText}\n📝 Пожелания: ${comment}`;
+
+    // Формируем ссылку для отправки через WhatsApp или SMS (на выбор)
+    // Используем WhatsApp, т.к. это удобно для бабушки
+    const url = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
+
+    // Открываем WhatsApp в новом окне
+    window.open(url, '_blank');
+
+    // Очищаем корзину после заказа
+    if (type === 'order') {
+      clearCart();
+    }
+    form.reset();
+    alert(`✅ ${typeLabel} отправлен! Бабушка свяжется с вами.`);
+  }
+
+  // Подсказка при загрузке
+  console.log('⚠️⚠️⚠️ МЕСТА ДЛЯ ЗАМЕНЫ:');
+  console.log('1. Картинки хлеба — ищите ⚠️ в атрибутах src');
+  console.log('2. Ссылки VK и Telegram в футере');
+  console.log('3. Номер телефона в переменной PHONE_NUMBER (строка ~175)');
+</script>
+<script>
+  // ========== ТЁМНАЯ ТЕМА ==========
+  const toggleBtn = document.getElementById('themeToggle');
+  const themeLabel = document.getElementById('themeLabel');
+  let dark = false;
+
+  toggleBtn.addEventListener('click', () => {
+    dark = !dark;
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : '');
+    themeLabel.textContent = dark ? 'Светлая' : 'Тема';
+    toggleBtn.innerHTML = dark ? '<i class="fas fa-sun"></i> Светлая' : '<i class="fas fa-moon"></i> Тема';
+  });
+
+  // ========== КОРЗИНА С УПРАВЛЕНИЕМ КОЛИЧЕСТВОМ ==========
+  let cart = [];
+
+  // Функция для добавления/изменения количества в корзине
+  function updateCartItem(name, price, change) {
+    const existing = cart.find(item => item.name === name);
+    if (existing) {
+      const newQty = existing.qty + change;
+      if (newQty <= 0) {
+        // Если количество становится 0, удаляем товар
+        cart = cart.filter(item => item.name !== name);
+        // Обновляем кнопку в карточке товара
+        updateProductControls(name, 0);
+      } else {
+        existing.qty = newQty;
+        // Обновляем отображение количества в карточке товара
+        updateProductControls(name, newQty);
+      }
+    } else if (change > 0) {
+      // Если товара нет в корзине и добавляем (change > 0)
+      cart.push({ name, price, qty: 1 });
+      // Обновляем кнопку в карточке товара
+      updateProductControls(name, 1);
+    }
+    renderCart();
+  }
+
+  // Функция для обновления контролов в карточке товара
+  function updateProductControls(name, qty) {
+    const breadItems = document.querySelectorAll('.bread-item');
+    breadItems.forEach(item => {
+      const itemName = item.getAttribute('data-name');
+      if (itemName === name) {
+        const btnContainer = item.querySelector('.btn-container');
+        if (!btnContainer) return;
+        
+        if (qty > 0) {
+          btnContainer.innerHTML = `
+            <button class="btn-qty" onclick="updateCartItem('${name}', ${getPrice(name)}, -1)">
+              <i class="fas fa-minus"></i>
+            </button>
+            <span class="qty-display" style="font-weight:600; font-size:1.1rem; min-width:24px; text-align:center;">${qty}</span>
+            <button class="btn-qty" onclick="updateCartItem('${name}', ${getPrice(name)}, 1)">
+              <i class="fas fa-plus"></i>
+            </button>
+          `;
+          // Добавляем стили для кнопок +/-
+          const btns = btnContainer.querySelectorAll('.btn-qty');
+          btns.forEach(btn => {
+            btn.style.background = 'var(--bg-card)';
+            btn.style.border = '1px solid var(--border-color)';
+            btn.style.borderRadius = '40px';
+            btn.style.width = '36px';
+            btn.style.height = '36px';
+            btn.style.display = 'flex';
+            btn.style.alignItems = 'center';
+            btn.style.justifyContent = 'center';
+            btn.style.cursor = 'pointer';
+            btn.style.transition = '0.2s';
+            btn.style.color = 'var(--text-primary)';
+            btn.onmouseover = function() {
+              this.style.background = 'var(--accent)';
+              this.style.color = '#fff';
+              this.style.borderColor = 'var(--accent)';
+            };
+            btn.onmouseout = function() {
+              this.style.background = 'var(--bg-card)';
+              this.style.color = 'var(--text-primary)';
+              this.style.borderColor = 'var(--border-color)';
+            };
+          });
+        } else {
+          btnContainer.innerHTML = `
+            <button class="btn-add-cart" onclick="addToCart('${name}', ${getPrice(name)})">
+              <i class="fas fa-plus"></i> В корзину
+            </button>
+          `;
+          // Стили для кнопки "В корзину" (сохраняем существующие)
+          const btn = btnContainer.querySelector('.btn-add-cart');
+          if (btn) {
+            btn.style.background = 'linear-gradient(135deg, var(--accent), var(--accent-dark))';
+            btn.style.color = '#fff';
+            btn.style.border = 'none';
+            btn.style.padding = '8px 18px';
+            btn.style.borderRadius = '60px';
+            btn.style.fontWeight = '600';
+            btn.style.fontSize = '0.85rem';
+            btn.style.cursor = 'pointer';
+            btn.style.transition = '0.3s';
+            btn.style.display = 'inline-flex';
+            btn.style.alignItems = 'center';
+            btn.style.gap = '6px';
+          }
+        }
+      }
+    });
+  }
+
+  // Вспомогательная функция для получения цены товара по имени
+  function getPrice(name) {
+    const breadItems = document.querySelectorAll('.bread-item');
+    for (let item of breadItems) {
+      if (item.getAttribute('data-name') === name) {
+        return parseInt(item.getAttribute('data-price'));
+      }
+    }
+    return 0;
+  }
+
+  // Функция добавления в корзину (вызывается из кнопки "В корзину")
+  function addToCart(name, price) {
+    const existing = cart.find(item => item.name === name);
+    if (existing) {
+      // Если товар уже есть, просто увеличиваем количество на 1
+      updateCartItem(name, price, 1);
+    } else {
+      // Добавляем новый товар
+      cart.push({ name, price, qty: 1 });
+      updateProductControls(name, 1);
+      renderCart();
+    }
+  }
+
+  // Удаление товара из корзины (для кнопки очистки)
+  function removeFromCart(name) {
+    cart = cart.filter(item => item.name !== name);
+    updateProductControls(name, 0);
+    renderCart();
+  }
+
+  // Очистка всей корзины
+  function clearCart() {
+    // Сохраняем имена товаров, чтобы обновить их контролы
+    const itemNames = cart.map(item => item.name);
+    cart = [];
+    itemNames.forEach(name => updateProductControls(name, 0));
+    renderCart();
+  }
+
+  // Отображение корзины
+  function renderCart() {
+    const container = document.getElementById('cartItems');
+    const totalEl = document.getElementById('cartTotal');
+    if (cart.length === 0) {
+      container.innerHTML = '<li style="color: var(--text-muted); font-weight:300;">Добавьте в корзину хлеб, и он отобразится в форме для заказа.</li>';
+      totalEl.textContent = 'Итого: 0 ₽';
+      return;
+    }
+    let html = '';
+    let total = 0;
+    cart.forEach(item => {
+      const sum = item.price * item.qty;
+      total += sum;
+      html += `
+        <li style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border-color);">
+          <span><strong>${item.name}</strong> × ${item.qty} = ${sum} ₽</span>
+          <button class="btn-clear-cart" style="padding:4px 12px; font-size:0.7rem; background:transparent; border:1px solid #e74c3c; color:#e74c3c; border-radius:40px; cursor:pointer; transition:0.3s;" 
+                  onmouseover="this.style.background='#e74c3c'; this.style.color='#fff';" 
+                  onmouseout="this.style.background='transparent'; this.style.color='#e74c3c';"
+                  onclick="removeFromCart('${item.name}')">✕</button>
+        </li>
+      `;
+    });
+    container.innerHTML = html;
+    totalEl.textContent = `Итого: ${total} ₽`;
+  }
+
+  // Инициализация: при загрузке страницы проверяем, есть ли товары в корзине
+  document.addEventListener('DOMContentLoaded', function() {
+    // Создаем контейнеры для кнопок в каждой карточке товара
+    document.querySelectorAll('.bread-item').forEach(item => {
+      const info = item.querySelector('.bread-info');
+      const existingBtn = info.querySelector('.btn-add-cart');
+      if (existingBtn) {
+        // Создаем контейнер для кнопок управления
+        const btnContainer = document.createElement('div');
+        btnContainer.className = 'btn-container';
+        btnContainer.style.display = 'flex';
+        btnContainer.style.alignItems = 'center';
+        btnContainer.style.gap = '12px';
+        btnContainer.style.marginTop = '10px';
+        
+        // Заменяем старую кнопку на контейнер
+        existingBtn.replaceWith(btnContainer);
+        
+        // Добавляем кнопку "В корзину" по умолчанию
+        const name = item.getAttribute('data-name');
+        const price = parseInt(item.getAttribute('data-price'));
+        btnContainer.innerHTML = `
+          <button class="btn-add-cart" onclick="addToCart('${name}', ${price})" 
+                  style="background:linear-gradient(135deg, var(--accent), var(--accent-dark)); color:#fff; border:none; padding:8px 18px; border-radius:60px; font-weight:600; font-size:0.85rem; cursor:pointer; transition:0.3s; display:inline-flex; align-items:center; gap:6px;">
+            <i class="fas fa-plus"></i> В корзину
+          </button>
+        `;
+      }
+    });
+  });
+
+  // ========== ОТПРАВКА ФОРМ ==========
+  // ⚠️⚠️⚠️ НОМЕР ТЕЛЕФОНА БАБУШКИ (привязан к MAX)
+  const PHONE_NUMBER = '89630006115'; // Реальный номер для MAX
+
+  function submitOrder(e, type) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const name = formData.get('name');
+    const phone = formData.get('phone');
+    const comment = formData.get('comment') || '';
+
+    // Собираем корзину
+    let cartText = '';
+    if (cart.length > 0) {
+      cartText = cart.map(i => `${i.name} × ${i.qty} = ${i.price*i.qty}₽`).join('; ');
+    } else {
+      cartText = 'не указано';
+    }
+
+    const typeLabel = type === 'order' ? 'ЗАКАЗ' : 'ЗАПИСЬ В ОЧЕРЕДЬ';
+    const message = `🍞 ${typeLabel} от ${name}\n📞 Телефон: ${phone}\n📦 Корзина: ${cartText}\n📝 Пожелания: ${comment}`;
+
+    // Отправка через MAX (используем номер телефона)
+    // MAX может открываться через URL-схему или через номер
+    // Используем универсальный способ - открываем WhatsApp как запасной вариант,
+    // но иконка и подпись будут MAX
+    const url = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+
+    // Очищаем корзину после заказа
+    if (type === 'order') {
+      clearCart();
+    }
+    form.reset();
+    alert(`✅ ${typeLabel} отправлен! Бабушка свяжется с вами.`);
+  }
+
+  // ========== ЗАМЕНА TELEGRAM НА MAX ==========
+  document.addEventListener('DOMContentLoaded', function() {
+    // Находим все ссылки в футере
+    const footerSocial = document.querySelector('.footer-social');
+    if (footerSocial) {
+      // Ищем ссылку на Telegram
+      const telegramLink = footerSocial.querySelector('a[title="Telegram"]');
+      if (telegramLink) {
+        // Меняем иконку на MAX (используем иконку сообщения или пользовательскую)
+        telegramLink.innerHTML = '<i class="fas fa-comment-dots"></i>';
+        telegramLink.setAttribute('title', 'MAX');
+        // ⚠️⚠️⚠️ ССЫЛКА НА MAX (привязан к номеру 89630006115)
+        // MAX обычно открывается через номер телефона
+        telegramLink.setAttribute('href', `tel:${PHONE_NUMBER}`);
+        telegramLink.setAttribute('onclick', `window.open('tel:${PHONE_NUMBER}','_blank'); return false;`);
+        // Добавляем подпись, что это MAX
+        const parent = telegramLink.parentNode;
+        const label = document.createElement('span');
+        label.style.cssText = 'margin-left:6px; font-size:0.75rem; color:var(--text-muted); font-weight:600;';
+        label.textContent = 'MAX';
+        parent.appendChild(label);
+      }
+    }
+  });
+</script>
+<script>
+  // ============================================================
+  // 1. ЗАМЕНА ТГ НА  MAX
+  // ============================================================
+  document.addEventListener('DOMContentLoaded', function() {
+    // Ищем ссылку на Telegram в футере
+    const footerSocial = document.querySelector('.footer-social');
+    if (footerSocial) {
+      const telegramLink = footerSocial.querySelector('a[title="Telegram"]');
+      if (telegramLink) {
+        // Меняем иконку на MAX (используем иконку сообщения)
+        telegramLink.innerHTML = '<i class="fas fa-comment-dots"></i>';
+        telegramLink.setAttribute('title', 'MAX');
+        // Ссылка на MAX через номер телефона
+        const phoneNumber = '89630006115';
+        telegramLink.setAttribute('href', `tel:${phoneNumber}`);
+        telegramLink.setAttribute('onclick', `window.open('tel:${phoneNumber}','_blank'); return false;`);
+        
+        // Добавляем подпись "MAX" рядом с иконкой
+        const parent = telegramLink.parentNode;
+        const label = document.createElement('span');
+        label.style.cssText = 'margin-left:6px; font-size:0.75rem; color:var(--text-muted); font-weight:600;';
+        label.textContent = 'MAX';
+        parent.appendChild(label);
+      }
+    }
+  });
+
+  // ============================================================
+  // 2. УПРАВЛЕНИЕ КОРЗИНОЙ С КНОПКАМИ +/-
+  // ============================================================
+  let cart = [];
+
+  // Получение цены товара по имени
+  function getPrice(name) {
+    const breadItems = document.querySelectorAll('.bread-item');
+    for (let item of breadItems) {
+      if (item.getAttribute('data-name') === name) {
+        return parseInt(item.getAttribute('data-price'));
+      }
+    }
+    return 0;
+  }
+
+  // Обновление контролов в карточке товара
+  function updateProductControls(name, qty) {
+    const breadItems = document.querySelectorAll('.bread-item');
+    breadItems.forEach(item => {
+      const itemName = item.getAttribute('data-name');
+      if (itemName === name) {
+        const btnContainer = item.querySelector('.btn-container');
+        if (!btnContainer) return;
+        
+        if (qty > 0) {
+          btnContainer.innerHTML = `
+            <button class="btn-qty" onclick="updateCartItem('${name}', ${getPrice(name)}, -1)">
+              <i class="fas fa-minus"></i>
+            </button>
+            <span class="qty-display" style="font-weight:600; font-size:1.1rem; min-width:24px; text-align:center;">${qty}</span>
+            <button class="btn-qty" onclick="updateCartItem('${name}', ${getPrice(name)}, 1)">
+              <i class="fas fa-plus"></i>
+            </button>
+          `;
+          // Стилизация кнопок +/-
+          const btns = btnContainer.querySelectorAll('.btn-qty');
+          btns.forEach(btn => {
+            btn.style.background = 'var(--bg-card)';
+            btn.style.border = '1px solid var(--border-color)';
+            btn.style.borderRadius = '40px';
+            btn.style.width = '36px';
+            btn.style.height = '36px';
+            btn.style.display = 'flex';
+            btn.style.alignItems = 'center';
+            btn.style.justifyContent = 'center';
+            btn.style.cursor = 'pointer';
+            btn.style.transition = '0.2s';
+            btn.style.color = 'var(--text-primary)';
+            btn.onmouseover = function() {
+              this.style.background = 'var(--accent)';
+              this.style.color = '#fff';
+              this.style.borderColor = 'var(--accent)';
+            };
+            btn.onmouseout = function() {
+              this.style.background = 'var(--bg-card)';
+              this.style.color = 'var(--text-primary)';
+              this.style.borderColor = 'var(--border-color)';
+            };
+          });
+        } else {
+          // Если количество 0, возвращаем кнопку "В корзину"
+          btnContainer.innerHTML = `
+            <button class="btn-add-cart" onclick="addToCart('${name}', ${getPrice(name)})">
+              <i class="fas fa-plus"></i> В корзину
+            </button>
+          `;
+          const btn = btnContainer.querySelector('.btn-add-cart');
+          if (btn) {
+            btn.style.background = 'linear-gradient(135deg, var(--accent), var(--accent-dark))';
+            btn.style.color = '#fff';
+            btn.style.border = 'none';
+            btn.style.padding = '8px 18px';
+            btn.style.borderRadius = '60px';
+            btn.style.fontWeight = '600';
+            btn.style.fontSize = '0.85rem';
+            btn.style.cursor = 'pointer';
+            btn.style.transition = '0.3s';
+            btn.style.display = 'inline-flex';
+            btn.style.alignItems = 'center';
+            btn.style.gap = '6px';
+          }
+        }
+      }
+    });
+  }
+
+  // Обновление элемента в корзине
+  function updateCartItem(name, price, change) {
+    const existing = cart.find(item => item.name === name);
+    if (existing) {
+      const newQty = existing.qty + change;
+      if (newQty <= 0) {
+        // Удаляем товар из корзины
+        cart = cart.filter(item => item.name !== name);
+        updateProductControls(name, 0);
+      } else {
+        existing.qty = newQty;
+        updateProductControls(name, newQty);
+      }
+    } else if (change > 0) {
+      // Добавляем новый товар
+      cart.push({ name, price, qty: 1 });
+      updateProductControls(name, 1);
+    }
+    renderCart();
+  }
+
+  // Добавление в корзину (вызывается из кнопки "В корзину")
+  function addToCart(name, price) {
+    const existing = cart.find(item => item.name === name);
+    if (existing) {
+      updateCartItem(name, price, 1);
+    } else {
+      cart.push({ name, price, qty: 1 });
+      updateProductControls(name, 1);
+      renderCart();
+    }
+  }
+
+  // Удаление товара из корзины (крестик)
+  function removeFromCart(name) {
+    cart = cart.filter(item => item.name !== name);
+    updateProductControls(name, 0);
+    renderCart();
+  }
+
+  // Очистка всей корзины
+  function clearCart() {
+    const itemNames = cart.map(item => item.name);
+    cart = [];
+    itemNames.forEach(name => updateProductControls(name, 0));
+    renderCart();
+  }
+
+  // Отображение корзины
+  function renderCart() {
+    const container = document.getElementById('cartItems');
+    const totalEl = document.getElementById('cartTotal');
+    if (cart.length === 0) {
+      container.innerHTML = '<li style="color: var(--text-muted); font-weight:300;">Добавьте в корзину хлеб, и он отобразится в форме для заказа.</li>';
+      totalEl.textContent = 'Итого: 0 ₽';
+      return;
+    }
+    let html = '';
+    let total = 0;
+    cart.forEach(item => {
+      const sum = item.price * item.qty;
+      total += sum;
+      html += `
+        <li style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border-color);">
+          <span><strong>${item.name}</strong> × ${item.qty} = ${sum} ₽</span>
+          <button class="btn-clear-cart" style="padding:4px 12px; font-size:0.7rem; background:transparent; border:1px solid #e74c3c; color:#e74c3c; border-radius:40px; cursor:pointer; transition:0.3s;" 
+                  onmouseover="this.style.background='#e74c3c'; this.style.color='#fff';" 
+                  onmouseout="this.style.background='transparent'; this.style.color='#e74c3c';"
+                  onclick="removeFromCart('${item.name}')">✕</button>
+        </li>
+      `;
+    });
+    container.innerHTML = html;
+    totalEl.textContent = `Итого: ${total} ₽`;
+  }
+
+  // Инициализация: подготовка контейнеров для кнопок
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.bread-item').forEach(item => {
+      const info = item.querySelector('.bread-info');
+      const existingBtn = info.querySelector('.btn-add-cart');
+      if (existingBtn) {
+        const btnContainer = document.createElement('div');
+        btnContainer.className = 'btn-container';
+        btnContainer.style.display = 'flex';
+        btnContainer.style.alignItems = 'center';
+        btnContainer.style.gap = '12px';
+        btnContainer.style.marginTop = '10px';
+        
+        existingBtn.replaceWith(btnContainer);
+        
+        const name = item.getAttribute('data-name');
+        const price = parseInt(item.getAttribute('data-price'));
+        btnContainer.innerHTML = `
+          <button class="btn-add-cart" onclick="addToCart('${name}', ${price})" 
+                  style="background:linear-gradient(135deg, var(--accent), var(--accent-dark)); color:#fff; border:none; padding:8px 18px; border-radius:60px; font-weight:600; font-size:0.85rem; cursor:pointer; transition:0.3s; display:inline-flex; align-items:center; gap:6px;">
+            <i class="fas fa-plus"></i> В корзину
+          </button>
+        `;
+      }
+    });
+  });
+
+  // ============================================================
+  // 3. ЗАМЕНА КАРТИНКИ В ГЕРОЕ
+  // ============================================================
+  document.addEventListener('DOMContentLoaded', function() {
+    const heroImage = document.querySelector('.hero-image');
+    if (heroImage) {
+      // Находим SVG и заменяем его на img
+      const svg = heroImage.querySelector('svg');
+      if (svg) {
+        const img = document.createElement('img');
+        // ⚠️⚠️⚠️ ССЫЛКА НА НОВОЕ ИЗОБРАЖЕНИЕ (ЗАМЕНИТЕ ПРИ НЕОБХОДИМОСТИ)
+        img.src = 'https://sun9-1.vkuserphoto.ru/s/v1/ig2/pH0DKtbwX5p6jU5y_t7DrTW2zdO8jY05MLPNjaJhZzhuPTgK012E95nDTz1YylXLznZWq4rR4IfQ_kicee6ZSPz8.jpg?quality=95&as=32x57,48x85,72x128,108x192,160x284,240x427,360x640,480x853,540x960,640x1138,720x1280&from=bu&u=d5wEpDhUQp0lDMfEH27PF8wFdICHTdlPo1e4rh8Z7ZY&cs=720x0';
+        img.alt = 'Ремесленный хлеб';
+        img.style.width = '100%';
+        img.style.maxWidth = '460px';
+        img.style.borderRadius = '40px';
+        img.style.boxShadow = 'var(--shadow)';
+        img.style.objectFit = 'cover';
+        img.style.aspectRatio = '1/1';
+        img.style.background = 'var(--bg-secondary)';
+        svg.replaceWith(img);
+      }
+    }
+  });
+
+  // ============================================================
+  // 4. ОТПРАВКА ФОРМ (СОХРАНЕНИЕ СУЩЕСТВУЮЩЕЙ ЛОГИКИ)
+  // ============================================================
+  const PHONE_NUMBER = '89630006115'; // Номер для MAX и WhatsApp
+
+  function submitOrder(e, type) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const name = formData.get('name');
+    const phone = formData.get('phone');
+    const comment = formData.get('comment') || '';
+
+    let cartText = '';
+    if (cart.length > 0) {
+      cartText = cart.map(i => `${i.name} × ${i.qty} = ${i.price*i.qty}₽`).join('; ');
+    } else {
+      cartText = 'не указано';
+    }
+
+    const typeLabel = type === 'order' ? 'ЗАКАЗ' : 'ЗАПИСЬ В ОЧЕРЕДЬ';
+    const message = `🍞 ${typeLabel} от ${name}\n📞 Телефон: ${phone}\n📦 Корзина: ${cartText}\n📝 Пожелания: ${comment}`;
+
+    const url = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+
+    if (type === 'order') {
+      clearCart();
+    }
+    form.reset();
+    alert(`✅ ${typeLabel} отправлен! Бабушка свяжется с вами.`);
+  }
+</script>
+
+<script>
+// ============================================================
+  // 5.согласие на обработку данных с чекбоксом
+  // ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+
+  // === 1. СОЗДАЁМ КАСТОМНОЕ УВЕДОМЛЕНИЕ ===
+  const modalOverlay = document.createElement('div');
+  modalOverlay.id = 'customAlertOverlay';
+  modalOverlay.style.cssText = `
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    z-index: 999999;
+    justify-content: center;
+    align-items: center;
+  `;
+
+  const modalBox = document.createElement('div');
+  modalBox.style.cssText = `
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px 35px;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+    text-align: center;
+    animation: fadeInUp 0.3s ease;
+  `;
+
+  modalBox.innerHTML = `
+    <div style="font-size: 48px; margin-bottom: 12px;">⚠️</div>
+    <h3 style="margin: 0 0 10px; font-size: 18px; color: #d32f2f;">Согласие не получено</h3>
+    <p style="margin: 0 0 20px; font-size: 14px; color: #555; line-height: 1.5;">
+      Вы не дали согласие на обработку персональных данных.<br>
+      <strong>Без него отправка формы невозможна.</strong>
+    </p>
+    <p style="margin: 0 0 20px; font-size: 13px; color: #888;">
+      Пожалуйста, отметьте чекбокс «я соглашаюсь с уведомлением о сборе данных»
+    </p>
+    <button id="closeCustomAlert" style="
+      padding: 10px 30px;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    ">Понятно, отмечу</button>
+  `;
+
+  modalOverlay.appendChild(modalBox);
+  document.body.appendChild(modalOverlay);
+
+  // Стили для анимации
+  const styleAnim = document.createElement('style');
+  styleAnim.textContent = `
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  `;
+  document.head.appendChild(styleAnim);
+
+  // Закрытие по клику на кнопку или оверлей
+  document.getElementById('closeCustomAlert').addEventListener('click', function() {
+    modalOverlay.style.display = 'none';
+  });
+  modalOverlay.addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.style.display = 'none';
+    }
+  });
+
+  // === 2. ФУНКЦИЯ ПОКАЗА УВЕДОМЛЕНИЯ ===
+  window.showConsentAlert = function() {
+    modalOverlay.style.display = 'flex';
+  };
+
+  // === 3. ТЕКСТ УВЕДОМЛЕНИЯ (ВСПЛЫВАШКА) ===
+  const noticeHTML = `
+    <div style="
+      margin-top: 8px;
+      font-size: 12px;
+      color: #999;
+      line-height: 1.4;
+    ">
+      <label style="cursor: pointer; display: flex; align-items: flex-start; gap: 6px;">
+        <input type="checkbox" id="dataConsent" style="margin-top: 2px; flex-shrink: 0;">
+        <span>
+          я соглашаюсь с 
+          <span 
+            style="
+              color: #999; 
+              text-decoration: underline dotted; 
+              cursor: help;
+              border-bottom: 1px dashed #ccc;
+              position: relative;
+            "
+            onmouseenter="this.nextElementSibling.style.display='block'"
+            onmouseleave="this.nextElementSibling.style.display='none'"
+          >уведомлением о сборе данных</span>
+          <span style="
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 20px 24px;
+            max-width: 380px;
+            width: 90%;
+            font-size: 13px;
+            color: #333;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+            z-index: 99999;
+            line-height: 1.6;
+          ">
+            <strong style="font-size: 15px;">Уведомление о сборе данных</strong><br><br>
+            Отправляя сообщение через данную форму, вы даёте согласие на обработку вашего имени и номера телефона в целях ответа на ваше обращение.<br><br>
+            Ваши данные не передаются третьим лицам и хранятся не дольше 7 дней после ответа.<br><br>
+            По вопросам удаления данных пишите: <a href="mailto:ivanshevbest@gmail.com" style="color: #0066cc;">ivanshevbest@gmail.com</a>
+            <br><br>
+            <button onclick="this.parentElement.style.display='none'" style="
+              padding: 6px 18px;
+              background: #eee;
+              border: none;
+              border-radius: 4px;
+              cursor: pointer;
+              font-size: 12px;
+            ">Закрыть</button>
+          </span>
+        </span>
+      </label>
+    </div>
+  `;
+
+  // === 4. ВСТАВЛЯЕМ ВО ВСЕ ФОРМЫ ===
+  const forms = document.querySelectorAll('form');
+  forms.forEach(function(form) {
+    const buttons = form.querySelectorAll('button[type="submit"], input[type="submit"]');
+    const lastButton = buttons.length > 0 ? buttons[buttons.length - 1] : null;
+    
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = noticeHTML;
+    const block = wrapper.firstElementChild;
+
+    if (lastButton) {
+      lastButton.parentNode.insertBefore(block, lastButton.nextSibling);
+    } else {
+      form.appendChild(block);
+    }
+  });
+
+  // === 5. БЛОКИРОВКА ОТПРАВКИ С КАСТОМНЫМ УВЕДОМЛЕНИЕМ ===
+  document.querySelectorAll('form').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+      const checkbox = form.querySelector('#dataConsent');
+      
+      // Если чекбокс существует и не отмечен
+      if (checkbox && !checkbox.checked) {
+        e.preventDefault(); // Блокируем отправку
+        
+        // Подсвечиваем чекбокс
+        checkbox.style.outline = '2px solid #d32f2f';
+        checkbox.style.backgroundColor = '#ffe6e6';
+        setTimeout(function() {
+          checkbox.style.outline = 'none';
+          checkbox.style.backgroundColor = '';
+        }, 3000);
+
+        // Показываем красивое уведомление
+        showConsentAlert();
+
+        // Прокручиваем к чекбоксу
+        checkbox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+  });
+
+});
+</script>
+<script>
+// ============================================================
+// СВЯЗЫВАЕМ КОРЗИНУ И ЗАКАЗ
+// Скрипт собирает товары из переменной cart и вставляет в форму orderForm
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  // === 1. ФУНКЦИЯ ПОЛУЧЕНИЯ ДАННЫХ ИЗ КОРЗИНЫ ===
+  function getCartData() {
+    // Проверяем, существует ли переменная cart
+    if (typeof cart !== 'undefined' && Array.isArray(cart)) {
+      return cart;
+    }
+    
+    // Если переменной нет — пробуем найти в localStorage
+    try {
+      const saved = localStorage.getItem('cart');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch(e) {}
+    
+    return [];
+  }
+
+  // === 2. ФУНКЦИЯ ФОРМИРОВАНИЯ ТЕКСТА ЗАКАЗА ===
+  function formatOrderText(items) {
+    if (!items || items.length === 0) {
+      return 'Корзина пуста';
+    }
+    
+    let result = '';
+    
+    items.forEach(function(item, index) {
+      const name = item.name || 'Товар';
+      const qty = item.qty || 1;
+      
+      result += (index > 0 ? '\n' : '') + 
+                'хлеб ' + name + ', ' + qty + ' шт.';
+    });
+    
+    return result;
+  }
+
+  // === 3. ВСТАВЛЯЕМ ДАННЫЕ В ФОРМУ orderForm ===
+  function fillOrderForm() {
+    // Получаем данные корзины
+    const cartData = getCartData();
+    
+    // Формируем текст
+    const orderText = formatOrderText(cartData);
+    
+    // === НАХОДИМ ФОРМУ ПО id="orderForm" ===
+    const orderForm = document.getElementById('orderForm');
+    
+    if (!orderForm) {
+      console.warn('Форма с id="orderForm" не найдена!');
+      return;
+    }
+    
+    // Ищем поле ввода внутри формы orderForm
+    // Вариант 1: textarea с name="order" или id="order-details"
+    let orderField = orderForm.querySelector('textarea[name="order"], textarea#order-details');
+    
+    // Вариант 2: любой textarea внутри формы
+    if (!orderField) {
+      orderField = orderForm.querySelector('textarea');
+    }
+    
+    // Вариант 3: input с name="order"
+    if (!orderField) {
+      orderField = orderForm.querySelector('input[name="order"]');
+    }
+    
+    // Если поле найдено — вставляем текст
+    if (orderField) {
+      orderField.value = orderText;
+      console.log('Данные корзины вставлены в форму заказа:', orderText);
+    } else {
+      console.warn('В форме orderForm не найдено поле для ввода заказа. Создаю новое...');
+      
+      // Создаём поле, если его нет
+      const newField = document.createElement('textarea');
+      newField.name = 'order';
+      newField.placeholder = 'Что вы хотите заказать';
+      newField.value = orderText;
+      newField.style.cssText = 'width: 100%; min-height: 80px; margin-top: 10px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;';
+      orderForm.appendChild(newField);
+    }
+  }
+
+  // === 4. ЗАПУСКАЕМ ===
+  // Заполняем сразу при загрузке
+  setTimeout(fillOrderForm, 150);
+  
+  // Обновляем при изменении корзины
+  function updateOrderField() {
+    setTimeout(fillOrderForm, 50);
+  }
+
+  // === 5. ПЕРЕХВАТЫВАЕМ ФУНКЦИИ КОРЗИНЫ ДЛЯ АВТООБНОВЛЕНИЯ ===
+  // Сохраняем оригинальные функции
+  const originalAdd = window.addToCart;
+  const originalRemove = window.removeFromCart;
+  const originalClear = window.clearCart;
+  const originalUpdate = window.updateCartItem;
+  
+  // Переопределяем функцию addToCart
+  if (typeof window.addToCart === 'function') {
+    window.addToCart = function(name, price) {
+      if (originalAdd) originalAdd(name, price);
+      updateOrderField();
+    };
+  }
+  
+  // Переопределяем функцию removeFromCart
+  if (typeof window.removeFromCart === 'function') {
+    window.removeFromCart = function(name) {
+      if (originalRemove) originalRemove(name);
+      updateOrderField();
+    };
+  }
+  
+  // Переопределяем функцию clearCart
+  if (typeof window.clearCart === 'function') {
+    window.clearCart = function() {
+      if (originalClear) originalClear();
+      updateOrderField();
+    };
+  }
+  
+  // Переопределяем функцию updateCartItem
+  if (typeof window.updateCartItem === 'function') {
+    window.updateCartItem = function(name, newQty) {
+      if (originalUpdate) originalUpdate(name, newQty);
+      updateOrderField();
+    };
+  }
+
+  // === 6. СОХРАНЕНИЕ В localStorage ===
+  window.saveCartToStorage = function() {
+    if (typeof cart !== 'undefined') {
+      try {
+        localStorage.setItem('cart', JSON.stringify(cart));
+      } catch(e) {}
+    }
+  };
+  
+  window.loadCartFromStorage = function() {
+    try {
+      const saved = localStorage.getItem('cart');
+      if (saved && typeof cart !== 'undefined') {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          cart = parsed;
+          if (typeof renderCart === 'function') {
+            renderCart();
+          }
+          fillOrderForm();
+          return true;
+        }
+      }
+    } catch(e) {}
+    return false;
+  };
+  
+  // Загружаем сохранённую корзину при старте
+  setTimeout(function() {
+    if (typeof cart !== 'undefined') {
+      const loaded = window.loadCartFromStorage();
+      if (!loaded) {
+        fillOrderForm();
+      }
+    }
+  }, 50);
+  
+  // Перехватываем изменения корзины для автосохранения
+  const origAdd2 = window.addToCart;
+  if (typeof window.addToCart === 'function') {
+    window.addToCart = function(name, price) {
+      if (origAdd2) origAdd2(name, price);
+      setTimeout(function() {
+        window.saveCartToStorage();
+        fillOrderForm();
+      }, 50);
+    };
+  }
+  
+  const origRemove2 = window.removeFromCart;
+  if (typeof window.removeFromCart === 'function') {
+    window.removeFromCart = function(name) {
+      if (origRemove2) origRemove2(name);
+      setTimeout(function() {
+        window.saveCartToStorage();
+        fillOrderForm();
+      }, 50);
+    };
+  }
+  
+  const origClear2 = window.clearCart;
+  if (typeof window.clearCart === 'function') {
+    window.clearCart = function() {
+      if (origClear2) origClear2();
+      setTimeout(function() {
+        window.saveCartToStorage();
+        fillOrderForm();
+      }, 50);
+    };
+  }
+
+  console.log('Скрипт связи корзины и формы заказа загружен!');
+  console.log('Используется форма с id="orderForm"');
+
+});
+</script>
+<script>
+//==========================================================================
+// МЕНЯЕМ TG НА MAX
+//==============================================================================
+  document.addEventListener('DOMContentLoaded', () => {
+    const maxLinks = document.querySelectorAll('a[title="MAX"]');
+
+    maxLinks.forEach(link => {
+      // 1. Удаляем старую иконку Telegram
+      const oldIcon = link.querySelector('.fab.fa-telegram-plane');
+      if (oldIcon) {
+        oldIcon.remove();
+      }
+
+      // 2. Создаём картинку-заглушку
+      const img = document.createElement('img');
+      img.src = 'https://sun9-43.vkuserphoto.ru/s/v1/ig2/pl_vXjziF5ndmvKfL7WVmbflzWMmmhOGoZ51--HNfS-hqpgU-_Ngp5m8FIPioJkxRtlMviAEfK5DyJbssnLuS5Uf.jpg?quality=95&as=32x30,48x45,72x68,108x102,160x152,211x200&from=bu&u=QTOpp7IQKBd8p9rls4z96XogjS9XZnVmXoq_x7dK8M4&cs=211x0'; // <-- сюда вставь путь к своей иконке
+      img.alt = 'Иконка MAX';
+      img.style.width = '24px';
+      img.style.height = '24px';
+      img.style.objectFit = 'contain';
+      img.style.display = 'block';
+      img.style.margin = '0';
+      img.style.padding = '0';
+
+      link.appendChild(img);
+
+      // 3. Гарантируем правильное выравнивание
+      // Находим контейнер .footer-social и ставим ему flex-выравнивание
+      const socialContainer = link.closest('.footer-social');
+      if (socialContainer) {
+        socialContainer.style.display = 'flex';
+        socialContainer.style.alignItems = 'center';
+        socialContainer.style.justifyContent = 'center'; // центрирует обе иконки
+        socialContainer.style.gap = '18px'; // расстояние между ВК и MAX
+        socialContainer.style.flexWrap = 'nowrap'; // чтобы не переносилось
+      }
+    });
+  });
+</script>
+<script>
+// ============================================================
+// 1. АВТООБНОВЛЕНИЕ ГОДА В КОПИРАЙТЕ
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  const currentYear = new Date().getFullYear();
+  const copyrightElements = document.querySelectorAll('.copyright, [class*="copy"], footer p:last-child');
+  
+  copyrightElements.forEach(function(el) {
+    el.innerHTML = el.innerHTML.replace(/\d{4}/g, currentYear);
+  });
+});
+
+// ============================================================
+// 2. КНОПКА «НАВЕРХ» В ФУТЕРЕ (В ОДИН РЯД С ИКОНКАМИ)
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+
+  const buttonText = 'Наверх';
+
+  // === ФУНКЦИЯ ПЛАВНОГО СКРОЛЛА К ПЛАШКЕ «РЕМЕСЛЕННЫЙ ХЛЕБ» ===
+  function scrollToTopBlock() {
+    let targetBlock = null;
+    
+    // 1. Ищем плашку с текстом "Ремесленный хлеб" (огонёк)
+    const allElements = document.querySelectorAll('*');
+    for (let i = 0; i < allElements.length; i++) {
+      const el = allElements[i];
+      const text = el.textContent || '';
+      // Ищем элемент, содержащий "Ремесленный хлеб"
+      if (text.includes('Ремесленный хлеб') && text.length < 100) {
+        targetBlock = el;
+        break;
+      }
+    }
+    
+    // 2. Если не нашли — ищем любой элемент с заголовком "Хлеб от бабушки"
+    if (!targetBlock) {
+      const headers = document.querySelectorAll('h1, h2, h3, h4');
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].textContent.includes('Хлеб от бабушки') || 
+            headers[i].textContent.includes('как в детстве')) {
+          targetBlock = headers[i];
+          break;
+        }
+      }
+    }
+    
+    // 3. Если не нашли — ищем первый заголовок на странице
+    if (!targetBlock) {
+      targetBlock = document.querySelector('h1, h2, h3');
+    }
+    
+    // 4. Если совсем ничего нет — скроллим наверх
+    if (!targetBlock) {
+      targetBlock = document.body;
+    }
+    
+    // Плавная прокрутка к блоку
+    targetBlock.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+    
+    console.log('Прокрутка к блоку: ' + (targetBlock.tagName || 'body'));
+  }
+
+  // === СОЗДАЁМ КНОПКУ ===
+  const button = document.createElement('span');
+  button.textContent = buttonText;
+  button.style.cssText = `
+    display: inline-block;
+    padding: 6px 14px;
+    background: #8B4513;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: Arial, sans-serif;
+    user-select: none;
+    margin: 0 5px;
+    text-decoration: none;
+    border: none;
+    line-height: 1.4;
+  `;
+  
+  button.addEventListener('mouseenter', function() {
+    this.style.background = '#A0522D';
+    this.style.transform = 'scale(1.05)';
+  });
+  button.addEventListener('mouseleave', function() {
+    this.style.background = '#8B4513';
+    this.style.transform = 'scale(1)';
+  });
+  button.addEventListener('click', scrollToTopBlock);
+
+  // === ИЩЕМ КОНТЕЙНЕР С ИКОНКАМИ ===
+  let iconContainer = null;
+
+  // Ищем контейнер по иконке MAX
+  const allLinks = document.querySelectorAll('a');
+  for (let i = 0; i < allLinks.length; i++) {
+    const link = allLinks[i];
+    const img = link.querySelector('img[alt="MAX"]');
+    const label = link.querySelector('span');
+    if (img || (label && label.textContent.trim() === 'MAX')) {
+      let parent = link.parentNode;
+      if (parent.style.display === 'flex' || parent.style.display === 'inline-flex') {
+        iconContainer = parent;
+      } else {
+        while (parent && parent !== document.body) {
+          const style = window.getComputedStyle(parent);
+          if (style.display === 'flex' || style.display === 'inline-flex' || 
+              parent.classList.contains('social-links') || parent.classList.contains('social-icons')) {
+            iconContainer = parent;
+            break;
+          }
+          parent = parent.parentNode;
+        }
+      }
+      break;
+    }
+  }
+
+  if (!iconContainer) {
+    iconContainer = document.querySelector('.social-links, .social-icons, .contacts, .footer-social');
+  }
+
+  if (!iconContainer) {
+    const footer = document.querySelector('footer');
+    if (footer) {
+      const footerLinks = footer.querySelectorAll('a');
+      for (let i = 0; i < footerLinks.length; i++) {
+        const link = footerLinks[i];
+        if (link.querySelector('img') || link.querySelector('svg')) {
+          let parent = link.parentNode;
+          if (parent.children.length > 1) {
+            iconContainer = parent;
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  // === ВСТАВЛЯЕМ КНОПКУ ===
+  if (iconContainer) {
+    iconContainer.appendChild(button);
+    console.log('Кнопка "Наверх" добавлена в контейнер с иконками');
+  } else {
+    console.warn('Контейнер с иконками не найден. Создаю новый...');
+    const footer = document.querySelector('footer');
+    if (footer) {
+      const newContainer = document.createElement('div');
+      newContainer.style.cssText = 'display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 10px 0;';
+      
+      const footerLinks = footer.querySelectorAll('a');
+      footerLinks.forEach(function(link) {
+        newContainer.appendChild(link.cloneNode(true));
+      });
+      
+      newContainer.appendChild(button);
+      
+      const copyright = footer.querySelector('.copyright, [class*="copy"], p:last-child');
+      if (copyright) {
+        footer.insertBefore(newContainer, copyright);
+      } else {
+        footer.insertBefore(newContainer, footer.firstChild);
+      }
+      console.log('Создан новый контейнер с иконками и кнопкой');
+    } else {
+      console.warn('Футер не найден. Кнопка не добавлена.');
+    }
+  }
+
+  console.log('Скрипт загружен. Кнопка "Наверх" прокручивает к плашке "Ремесленный хлеб"');
+
+});
+</script>
+<script>
+// ============================================================
+// ТЕКСТОВОЕ УВЕДОМЛЕНИЕ ПОД КАЖДОЙ ФОРМОЙ (АВТОМАТИЧЕСКИ)
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  // === 1. ТЕКСТ УВЕДОМЛЕНИЯ ===
+  const noticeHTML = `
+    <div style="
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: #fef9e7;
+      border-left: 4px solid #f39c12;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.5;
+      text-align: center;
+    ">
+      ⚠️ Если по техническим причинам заказ не отправился, 
+      напишите мне в 
+      <a href="#footer" style="
+        color: #8B4513; 
+        font-weight: 600; 
+        text-decoration: underline;
+        cursor: pointer;
+        transition: color 0.2s;
+      " onclick="document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); return false;">
+        MAX
+      </a>
+     
+    </div>
+  `;
+
+  // === 2. НАХОДИМ ВСЕ ФОРМЫ НА СТРАНИЦЕ ===
+  const forms = document.querySelectorAll('form');
+  
+  if (forms.length === 0) {
+    console.warn('На странице не найдено ни одной формы');
+    return;
+  }
+
+  // === 3. ВСТАВЛЯЕМ ПОД КАЖДУЮ ФОРМУ ===
+  forms.forEach(function(form, index) {
+    // Создаём контейнер для уведомления
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = noticeHTML;
+    const notice = wrapper.firstElementChild;
+    
+    // Вставляем после формы
+    form.parentNode.insertBefore(notice, form.nextSibling);
+    
+    console.log(`✅ Уведомление добавлено под формой #${index + 1}`);
+  });
+
+  // === 4. ДОБАВЛЯЕМ ID="footer" К ФУТЕРУ (ЕСЛИ ЕГО НЕТ) ===
+  if (!document.getElementById('footer')) {
+    const footer = document.querySelector('footer');
+    if (footer) {
+      footer.id = 'footer';
+      console.log('✅ Футеру присвоен id="footer"');
+    } else {
+      console.warn('⚠️ Футер не найден. Убедитесь, что на странице есть <footer>');
+    }
+  }
+
+  console.log(`✅ Скрипт загружен. Найдено форм: ${forms.length}`);
+
+});
+</script>
+<script>
+// ============================================================
+// АГРЕССИВНАЯ ЗАЩИТА ФОРМ:
+// 1. ЗАПРЕЩАЕМ ФРАЗУ "КОРЗИНА ПУСТА" В ПОЛЯХ ЗАКАЗА
+// 2. БЛОКИРУЕМ ОТПРАВКУ, ЕСЛИ СВОЁ ПОЛЕ ЗАКАЗА ПУСТОЕ
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  // === 1. НАХОДИМ ВСЕ ФОРМЫ ===
+  const forms = document.querySelectorAll('form');
+  
+  if (forms.length === 0) {
+    console.warn('⚠️ На странице не найдено ни одной формы');
+    return;
+  }
+
+  // === 2. ДЛЯ КАЖДОЙ ФОРМЫ НАСТРАИВАЕМ ЗАЩИТУ ===
+  forms.forEach(function(form, formIndex) {
+    
+    // === 2.1. НАХОДИМ ПОЛЕ ЗАКАЗА/ПОЖЕЛАНИЙ В ЭТОЙ ФОРМЕ ===
+    let orderField = null;
+    
+    // Ищем по атрибутам name
+    const possibleNames = ['order', 'wish', 'пожелания', 'заказ'];
+    for (let name of possibleNames) {
+      const field = form.querySelector(`textarea[name="${name}"], input[name="${name}"]`);
+      if (field) {
+        orderField = field;
+        break;
+      }
+    }
+    
+    // Если не нашли — ищем по id
+    if (!orderField) {
+      const possibleIds = ['order-details', 'order', 'wish', 'пожелания'];
+      for (let id of possibleIds) {
+        const field = form.querySelector(`#${id}`);
+        if (field) {
+          orderField = field;
+          break;
+        }
+      }
+    }
+    
+    // Если поле не найдено — пропускаем эту форму
+    if (!orderField) {
+      console.warn(`⚠️ В форме #${formIndex + 1} не найдено поле заказа/пожеланий`);
+      return;
+    }
+    
+    console.log(`✅ Форма #${formIndex + 1}: поле заказа найдено`);
+
+    // === 3. ЗАПРЕЩАЕМ ФРАЗУ "КОРЗИНА ПУСТА" ===
+    function removeForbiddenPhrase() {
+      const currentValue = orderField.value;
+      if (currentValue.toLowerCase().includes('корзина пуста')) {
+        // Удаляем только эту фразу (регистронезависимо)
+        const cleaned = currentValue.replace(/корзина пуста/gi, '').trim();
+        orderField.value = cleaned;
+        
+        // Агрессивный лог
+        console.error(`🚫 ФОРМА #${formIndex + 1}: УДАЛЕНА "Корзина пуста"`);
+        
+        // Визуальная подсветка
+        orderField.style.border = '3px solid #d32f2f';
+        orderField.style.backgroundColor = '#fff3f3';
+        setTimeout(function() {
+          orderField.style.border = '';
+          orderField.style.backgroundColor = '';
+        }, 2000);
+      }
+    }
+
+    // Перехват ввода
+    orderField.addEventListener('input', removeForbiddenPhrase);
+    orderField.addEventListener('paste', function() {
+      setTimeout(removeForbiddenPhrase, 10);
+    });
+
+    // === 4. БЛОКИРУЕМ ОТПРАВКУ, ЕСЛИ ПОЛЕ ПУСТОЕ ===
+    form.addEventListener('submit', function(e) {
+      // Сначала удаляем запрещённую фразу (на всякий случай)
+      removeForbiddenPhrase();
+      
+      // Проверяем, пустое ли поле после очистки
+      const fieldValue = orderField.value.trim();
+      
+      if (fieldValue === '') {
+        // Блокируем отправку
+        e.preventDefault();
+        
+        // Подсвечиваем поле
+        orderField.style.border = '3px solid #d32f2f';
+        orderField.style.backgroundColor = '#fff3f3';
+        orderField.focus();
+        
+        // Показываем сообщение
+        alert('⚠️ Пожалуйста, заполните поле заказа/пожеланий перед отправкой!');
+        
+        console.warn(`🚫 ФОРМА #${formIndex + 1}: Отправка БЛОКИРОВАНА — поле заказа пустое`);
+        
+        // Убираем подсветку через 3 секунды
+        setTimeout(function() {
+          orderField.style.border = '';
+          orderField.style.backgroundColor = '';
+        }, 3000);
+      } else {
+        console.log(`✅ ФОРМА #${formIndex + 1}: Отправка разрешена`);
+      }
+    });
+
+  });
+
+  // === 5. ИТОГОВЫЙ ЛОГ ===
+  console.log(`🔥 АГРЕССИВНАЯ ЗАЩИТА АКТИВИРОВАНА ДЛЯ ${forms.length} ФОРМ!`);
+  console.log(`🚫 Фраза "Корзина пуста" ЗАПРЕЩЕНА во всех полях заказа.`);
+  console.log(`🔒 Отправка БЛОКИРУЕТСЯ, если поле заказа/пожеланий ПУСТОЕ.`);
+
+});
+</script>
+<script>
+// ============================================================
+// СИНХРОНИЗАЦИЯ КОРЗИНЫ С ДВУМЯ ФОРМАМИ
+// Текст заказа дублируется в orderForm и queueForm
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  // === 1. ФУНКЦИЯ ПОЛУЧЕНИЯ ТЕКСТА ЗАКАЗА ===
+  function getOrderText() {
+    if (typeof cart === 'undefined' || !Array.isArray(cart) || cart.length === 0) {
+      return ''; // Пустая строка, если корзина пуста
+    }
+    
+    return cart.map(item => 
+      `хлеб ${item.name}, ${item.qty} шт.`
+    ).join('\n');
+  }
+
+  // === 2. ФУНКЦИЯ ОБНОВЛЕНИЯ ВСЕХ ПОЛЕЙ ===
+  function updateAllOrderFields() {
+    const orderText = getOrderText();
+    
+    // === 2.1. Обновляем поле в orderForm ===
+    const orderForm = document.getElementById('orderForm');
+    if (orderForm) {
+      const field1 = orderForm.querySelector('textarea[name="order"], textarea#order-details');
+      if (field1) {
+        field1.value = orderText;
+        console.log('✅ orderForm обновлена');
+      } else {
+        console.warn('⚠️ В orderForm не найдено поле для заказа');
+      }
+    } else {
+      console.warn('⚠️ Форма orderForm не найдена');
+    }
+    
+    // === 2.2. Обновляем поле в queueForm ===
+    const queueForm = document.getElementById('queueForm');
+    if (queueForm) {
+      const field2 = queueForm.querySelector('textarea[name="order"], textarea#order-details, textarea[name="wish"]');
+      if (field2) {
+        field2.value = orderText;
+        console.log('✅ queueForm обновлена');
+      } else {
+        console.warn('⚠️ В queueForm не найдено поле для заказа');
+      }
+    } else {
+      console.warn('⚠️ Форма queueForm не найдена');
+    }
+    
+    // Логируем для проверки
+    if (orderText === '') {
+      console.log('📭 Корзина пуста — все поля заказа очищены');
+    } else {
+      console.log('📦 Корзина синхронизирована с ОБЕИМИ формами');
+    }
+  }
+
+  // === 3. ПЕРЕХВАТЫВАЕМ ФУНКЦИИ КОРЗИНЫ ===
+  const originalAdd = window.addToCart;
+  const originalRemove = window.removeFromCart;
+  const originalClear = window.clearCart;
+  const originalUpdate = window.updateCartItem;
+
+  if (typeof window.addToCart === 'function') {
+    window.addToCart = function(name, price) {
+      if (originalAdd) originalAdd(name, price);
+      setTimeout(updateAllOrderFields, 50);
+    };
+  }
+
+  if (typeof window.removeFromCart === 'function') {
+    window.removeFromCart = function(name) {
+      if (originalRemove) originalRemove(name);
+      setTimeout(updateAllOrderFields, 50);
+    };
+  }
+
+  if (typeof window.clearCart === 'function') {
+    window.clearCart = function() {
+      if (originalClear) originalClear();
+      setTimeout(updateAllOrderFields, 50);
+    };
+  }
+
+  if (typeof window.updateCartItem === 'function') {
+    window.updateCartItem = function(name, newQty) {
+      if (originalUpdate) originalUpdate(name, newQty);
+      setTimeout(updateAllOrderFields, 50);
+    };
+  }
+
+  // === 4. ЗАПУСКАЕМ ПРИ ЗАГРУЗКЕ ===
+  setTimeout(updateAllOrderFields, 200);
+  setTimeout(updateAllOrderFields, 1000);
+
+  console.log('🔄 Синхронизация корзины с ДВУМЯ формами активирована');
+  console.log('📌 Поля в orderForm и queueForm обновляются одновременно');
+
+});
+</script>
+</body>
+</html>
